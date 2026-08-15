@@ -239,6 +239,15 @@ body {
     gap: 1rem;
 }
 
+/* En pantallas anchas: productos y lista de compras lado a lado (50/50) */
+@media (min-width: 980px) {
+    .main-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
 /* ===== Products section ===== */
 .section-header {
     margin-bottom: 0.8rem;
@@ -366,6 +375,17 @@ body {
     box-shadow: var(--shadow-md);
     border: 1px solid var(--color-border);
     margin-top: 0.5rem;
+}
+
+/* En pantallas anchas: la lista queda fija al lado de productos */
+@media (min-width: 980px) {
+    .list-section {
+        position: sticky;
+        top: 160px;
+        max-height: calc(100vh - 180px);
+        overflow-y: auto;
+        margin-top: 0;
+    }
 }
 
 .list-section-header {
@@ -1166,6 +1186,12 @@ body {
     .sidebar {
         position: static;
         max-height: none;
+    }
+
+    .list-section {
+        position: static;
+        max-height: none;
+        overflow-y: visible;
     }
 
     .logo-text h1 {
