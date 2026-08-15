@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Lista de mercado peruana - organiza tu compra por categorías e imprímela">
+    <title>🥑 Mi Lista de Mercado Peruana</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🛒</span>
+                <div class="logo-text">
+                    <h1>Mi Lista de Mercado</h1>
+                    <p>Hecho con cariño para familias peruanas 🇵🇪</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat">
+                    <span class="stat-number" id="totalItems">0</span>
+                    <span class="stat-label">productos</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="totalCategories">0</span>
+                    <span class="stat-label">categorías</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search bar -->
+    <div class="search-bar no-print">
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Busca un producto (ej. papa, pollo, leche...)" autocomplete="off">
+            <button class="search-clear" id="searchClear" aria-label="Limpiar búsqueda">✕</button>
+        </div>
+    </div>
+
+    <!-- Barra de acciones de plantillas (separada del sidebar) -->
+    <div class="templates-bar no-print">
+        <div class="templates-bar-content">
+            <button class="btn btn-secondary" id="repeatLastBtn" title="Repetir la lista anterior">
+                <span>🔁</span> Repetir última
+            </button>
+            <button class="btn btn-secondary" id="saveAsTemplateBtn" title="Guardar lista actual como plantilla">
+                <span>💾</span> Guardar plantilla
+            </button>
+            <button class="btn btn-secondary" id="openTemplatesBtn" title="Cargar una plantilla guardada">
+                <span>📂</span> Plantillas
+            </button>
+        </div>
+    </div>
+
+    <!-- Main container -->
+    <main class="main-container">
+        <!-- Products section (arriba, ancho completo) -->
+        <section class="products-section">
+            <div class="section-header no-print">
+                <h2>📋 Productos disponibles</h2>
+                <p class="subtitle">Toca <strong>+</strong> para agregar, o <strong>—</strong> para ajustar la cantidad</p>
+            </div>
+
+            <div id="categoriesContainer" class="categories-container">
+                <!-- Las categorías se generan dinámicamente -->
+            </div>
+
+            <div id="noResults" class="no-results hidden">
+                <span class="no-results-icon">🔎</span>
+                <h3>No encontramos nada</h3>
+                <p>Prueba con otra palabra o agrega un producto personalizado abajo</p>
+            </div>
+        </section>
+
+        <!-- Lista seleccionada (debajo, ancho completo, items grandes) -->
+        <section class="list-section no-print">
+            <div class="list-section-header">
+                <div class="list-section-title">
+                    <h2>🛍️ Mi Lista</h2>
+                    <span class="list-count" id="listCount">0 productos</span>
+                </div>
+                <div class="list-section-actions">
+                    <button class="btn btn-secondary" id="addCustomBtn" title="Agregar producto personalizado">
+                        <span>➕</span> Personalizado
+                    </button>
+                    <button class="btn btn-secondary" id="clearAllBtn" title="Vaciar lista">
+                        <span>🗑️</span> Vaciar
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn btn-ghost hidden" id="clearCheckedBtn" title="Quitar los productos ya marcados como comprados">
+                <span>✅</span> Quitar comprados (<span id="checkedCount">0</span>)
+            </button>
+
+            <div class="sidebar-list" id="sidebarList">
+                <div class="empty-state">
+                    <span class="empty-icon">🧺</span>
+                    <p>Tu lista está vacía</p>
+                    <p class="empty-hint">Agrega productos desde arriba</p>
+                </div>
+            </div>
+
+            <div class="list-section-footer">
+                <div class="notes-section">
+                    <label for="notesInput">📝 Notas para el mercado</label>
+                    <textarea id="notesInput" rows="2" placeholder="Ej. preferir marca Gloria, ir temprano..."></textarea>
+                </div>
+                <div class="list-section-footer-actions">
+                    <button class="btn btn-primary btn-print" id="printBtn">
+                        <span>🖨️</span> Imprimir Lista
+                    </button>
+                    <button class="btn btn-whatsapp" id="whatsappBtn">
+                        <span>📱</span> Enviar por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para producto personalizado -->
+    <div class="modal-overlay hidden" id="customModal">
+        <div class="modal">
+            <h3>➕ Agregar producto personalizado</h3>
+            <label for="customName">Nombre del producto</label>
+            <input type="text" id="customName" placeholder="Ej. Cañón de chancho" maxlength="40">
+            <label for="customCategory">Categoría</label>
+            <select id="customCategory">
+                <!-- Se llena dinámicamente -->
+            </select>
+            <label for="customUnit">Unidad (opcional)</label>
+            <input type="text" id="customUnit" placeholder="kg, litros, unidades..." maxlength="20">
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancelCustom">Cancelar</button>
+                <button class="btn btn-primary" id="saveCustom">Agregar a la lista</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para nota por producto -->
+    <div class="modal-overlay hidden" id="noteModal">
+        <div class="modal">
+            <h3 id="noteModalTitle">📝 Nota para el producto</h3>
+            <label for="noteText">Instrucción o preferencia</label>
+            <input type="text" id="noteText" placeholder="Ej. que esté maduro, marca Gloria..." maxlength="80">
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="removeNoteBtn">Quitar nota</button>
+                <button class="btn btn-secondary" id="cancelNoteBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveNoteBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para guardar plantilla -->
+    <div class="modal-overlay hidden" id="templateModal">
+        <div class="modal">
+            <h3>💾 Guardar lista como plantilla</h3>
+            <label for="templateName">Nombre de la plantilla</label>
+            <input type="text" id="templateName" placeholder="Ej. Compra semanal, Fiesta, Mensual..." maxlength="30">
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancelTemplateBtn">Cancelar</button>
+                <button class="btn btn-primary" id="saveTemplateBtn">Guardar plantilla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para seleccionar plantilla guardada -->
+    <div class="modal-overlay hidden" id="loadTemplateModal">
+        <div class="modal modal-wide">
+            <h3>📂 Tus plantillas guardadas</h3>
+            <div id="templatesList" class="templates-list"></div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeLoadTemplateBtn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Versión imprimible (solo se muestra al imprimir) -->
+    <div class="print-only" id="printView">
+        <div class="print-header">
+            <h1>🛒 Mi Lista de Mercado</h1>
+            <p id="printDate"></p>
+        </div>
+        <div id="printCategories"></div>
+        <div class="print-notes" id="printNotesSection"></div>
+        <div class="print-footer">
+            <p>✅ ¡Lista lista para el mercado!</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
